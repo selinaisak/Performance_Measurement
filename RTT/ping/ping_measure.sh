@@ -15,7 +15,7 @@ touch $FILE
 for ((i = 1; i <= $ITERATIONS; i++))
 do
     echo "------------------ ITERATION: $i -------------------" | tee -a $FILE
-    ping -c 10 -i 0.2 $SERVER_IP | tee -a $FILE
+    ping -c 10 $SERVER_IP | tee -a $FILE
 done
 
 exit
