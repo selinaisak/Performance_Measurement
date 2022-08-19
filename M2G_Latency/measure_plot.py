@@ -1,10 +1,10 @@
 import math
 import os
-import matplotlib
+import matplotlib.pyplot as plt
 import numpy
 
 BUFFER_LENGTH = 0.133
-#QUALITIES = [1, 2]
+# QUALITIES = [1, 2]
 
 '''used to parse the wanted lines from log-file'''
 
@@ -84,8 +84,8 @@ def getNextTileQualityTimestamp(current_index, tiles, values, minLatency):
         if (value[0] == '[HEAD_VD]'):
             break
         else:
-             if (value[2] == tiles and (int(value[1]) - int(start_time)) / (
-             #if (all(item in tiles for item in value[2]) and (int(value[1]) - int(start_time)) / (
+            if (value[2] == tiles and (int(value[1]) - int(start_time)) / (
+                    # if (all(item in tiles for item in value[2]) and (int(value[1]) - int(start_time)) / (
                     1000 * 1000 * 1000) >= minLatency):
                 print("tiles " + str(tiles))
                 print("value[2] " + str(value[2]))
@@ -138,12 +138,32 @@ def printStats(latencies):
     print("StdDev: %.3f sec" % round(getStdDev(latencies[0]), 3))
     print("Max: %.3f sec" % round(getMax(latencies[0]), 3))
     print("Min: %.3f sec" % round(getMin(latencies[0]), 3))
-    print("success: %.3f%s" % ((len(latencies[0])/latencies[1])*100, "%"))
+    print("success: %.3f%s" % ((len(latencies[0]) / latencies[1]) * 100, "%"))
 
-def plot(latencies):
-    
+
+def plot(latencies_list):
+
+    if len(latencies_list) < 3:
+        print("too little values")
+    fig, (ax1, ax2, ax3) = plt.subplots(3, sharex=True, sharey=True)
+    y_netgear  = numpy.array(latencies_list[0][0])
+    y_4G = numpy.array(latencies_list[1][0])
+    y_5G = numpy.array(latencies_list[2][0])
+    ax1.plot(y_netgear, label='WiFi', color='blue', linewidth=0.75)
+    ax2.plot(y_4G, label='4G', color='green', linewidth=0.75)
+    ax3.plot(y_5G, label='5G', color="red", linewidth=0.75)
+    ax1.title.set_text('WiFi')
+    ax2.title.set_text('4G')
+    ax3.title.set_text('5G')
+
+    fig.tight_layout()
+    plt.show()
 
 
 if __name__ == '__main__':
-    latencies = getLatenciesDir("D://Data/Measurements/Lat_new/tiled/2K/GOP4/UCVR")
-    printStats(latencies)
+    latencies_WiFi = getLatenciesDir("D://Data/New_Server_Measurements/M2G_new/tiled/ele2k_gop4/Netgear")
+    latencies_4G = getLatenciesDir("D://Data/New_Server_Measurements/M2G_new/tiled/ele2k_gop4/4G")
+    latencies_5G = getLatenciesDir("D://Data/New_Server_Measurements/M2G_new/tiled/ele2k_gop4/5G")
+    latencies = [latencies_WiFi, latencies_4G, latencies_5G]
+
+    plot(latencies)
