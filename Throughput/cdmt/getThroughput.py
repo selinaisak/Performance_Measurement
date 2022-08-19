@@ -12,7 +12,7 @@ def main(argv):
         inputfolder = argv[1]
         link = argv[2]
         linkfolder = "tcp_" + link + "link"
-        files = glob.glob(linkfolder + "/" + inputfolder + "/*.csv")
+        files = glob.glob(inputfolder + "/" + linkfolder + "/*.csv")
         if(link == "up"):
             column = "TCPUL"
         else:

@@ -91,9 +91,9 @@ def setSndRcvFlags(lines):
   
     return flagged_lines
 
-def fullSecond(intervallString):
-    start = float(intervallString.split("-")[0])
-    end = float(intervallString.split("-")[1])
+def fullSecond(intervalString):
+    start = float(intervalString.split("-")[0])
+    end = float(intervalString.split("-")[1])
     return (end - start)==1
 
 if __name__ == "__main__":
